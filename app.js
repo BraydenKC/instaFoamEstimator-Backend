@@ -85,12 +85,12 @@ app.post("/request-quote", async (req, res) => {
       params: req.body.params
     }
 
-    console.log(bodyContent);
+    console.log(toClientBodyContent);
 
 
     //If the user wants to send us an email, send a copy of the email to us and them.
     if(wantsEstimate) {
-
+      console.log('0')
       //Send the info to client over to SendinBlue
       fetch('https://api.sendinblue.com/v3/smtp/email', {
         method: 'POST',
@@ -103,7 +103,7 @@ app.post("/request-quote", async (req, res) => {
         json: true
 
     }).then( () => {
-
+      console.log('1');
       //Send the info to IF Team over to SendinBlue
       fetch('https://api.sendinblue.com/v3/smtp/email', {
         method: 'POST',
@@ -117,6 +117,7 @@ app.post("/request-quote", async (req, res) => {
     })
   })
     .then(() => {
+      console.log('2');
       res.json(["This", "Worked"]);
     })
 }   
