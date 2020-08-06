@@ -7,13 +7,13 @@ const convert = require("xml-js");
 var cors = require("cors");
 const { response } = require("express");
 const app = express();
-const port = 3000;
+//const port = 3000;
 
 // Rate limiting - Goodreads limits to 1/sec, so we should too
 
 // Enable if you're behind a reverse proxy (Heroku, Bluemix, AWS ELB, Nginx, etc)
 // see https://expressjs.com/en/guide/behind-proxies.html
-// app.set('trust proxy', 1);
+app.set('trust proxy', 1);
 
 
 // Allow CORS from any origin
@@ -109,4 +109,4 @@ app.post("/request-quote", async (req, res) => {
 // This spins up our sever and generates logs for us to use.
 // Any console.log statements you use in node for debugging will show up in your
 // terminal, not in the browser console!
-app.listen(port, () => console.log(`Example app listening on port ${port}!`));
+//app.listen(port, () => console.log(`Example app listening on port ${port}!`));
