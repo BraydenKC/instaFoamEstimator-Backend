@@ -92,6 +92,7 @@ app.post("/request-quote", async (req, res) => {
 
     }).then(() => {
       console.log("Again");
+      res.json(["This", "Worked"])
     } )
 }   
 
