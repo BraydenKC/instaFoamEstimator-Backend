@@ -96,7 +96,7 @@ app.post("/request-quote", async (req, res) => {
 
 
     //If the user wants to send us an email, send a copy of the email to us and them.
-    if (wantsEstimate) {
+    if (wantsEstimate === 'true') {
 
       //Send the info to client over to SendinBlue
       fetch('https://api.sendinblue.com/v3/smtp/email', {
