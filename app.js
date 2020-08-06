@@ -115,11 +115,10 @@ app.post("/request-quote", async (req, res) => {
         body: JSON.stringify(toIFBodyContent),
         json: true
     })
-    
-    
+  })
     .then(() => {
-      res.json(["This", "Worked"])
-    } )
+      res.json(["This", "Worked"]);
+    })
 }   
     
   } catch (err) {
