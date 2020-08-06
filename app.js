@@ -64,8 +64,8 @@ app.post("/request-quote", async (req, res) => {
     //Setting up the auto email to the client
     const toClientBodyContent = {
       sender: {
-          name: 'InstaFoam',
-          email: 'brayden@yycscrewpiles.com',
+        name: 'InstaFoam',
+        email: 'brayden@yycscrewpiles.com',
       },
       to: [{ email: req.body.email, name: req.body.name }],
       replyTo: { email: 'brayden@yycscrewpiles.com' },
@@ -77,14 +77,14 @@ app.post("/request-quote", async (req, res) => {
     const addContactBodyContent = {
       updateEnabled: true,
       email: req.body.email,
-      attributes: {'INPUT_NAME': req.body.name}
+      attributes: { 'INPUT_NAME': req.body.name }
     }
 
     //Setting up the auto email to Tyler
     const toIFBodyContent = {
       sender: {
-          name: 'InstaFoam - ' + req.body.name,
-          email: 'brayden@yycscrewpiles.com',
+        name: 'InstaFoam - ' + req.body.name,
+        email: 'brayden@yycscrewpiles.com',
       },
       to: [{ email: 'bclark@strikeent.com', name: "Tyler" }],
       replyTo: { email: req.body.email },
@@ -96,55 +96,71 @@ app.post("/request-quote", async (req, res) => {
 
 
     //If the user wants to send us an email, send a copy of the email to us and them.
-    if(wantsEstimate) {
-      console.log('0')
+    if (wantsEstimate) {
+
       //Send the info to client over to SendinBlue
       fetch('https://api.sendinblue.com/v3/smtp/email', {
         method: 'POST',
         headers: {
-            accept: 'application/json',
-            'content-type': 'application/json',
-            'api-key': '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'
+          accept: 'application/json',
+          'content-type': 'application/json',
+          'api-key': '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'
         },
         body: JSON.stringify(toClientBodyContent),
         json: true
 
-    })
-    
-    .then( () => {
-
-      fetch('https://api.sendinblue.com/v3/contacts', {
-        method: 'POST',
-        headers: {
-          accept: 'application/json',
-          'content-type' : 'application/json',
-          'api-key': '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'
-        },
-        body: JSON.stringify(addContactBodyContent),
-        json: true
       })
-    })
-    
-    .then( () => {
-      console.log('1');
-      //Send the info to IF Team over to SendinBlue
+
+        .then(() => {
+
+          fetch('https://api.sendinblue.com/v3/contacts', {
+            method: 'POST',
+            headers: {
+              accept: 'application/json',
+              'content-type': 'application/json',
+              'api-key': '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'
+            },
+            body: JSON.stringify(addContactBodyContent),
+            json: true
+          })
+        })
+
+        .then(() => {
+
+          //Send the info to IF Team over to SendinBlue
+          fetch('https://api.sendinblue.com/v3/smtp/email', {
+            method: 'POST',
+            headers: {
+              accept: 'application/json',
+              'content-type': 'application/json',
+              'api-key': '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'
+            },
+            body: JSON.stringify(toIFBodyContent),
+            json: true
+          })
+        })
+        .then(() => {
+
+          res.json(["This", "Worked"]);
+        })
+    } else {
+
       fetch('https://api.sendinblue.com/v3/smtp/email', {
         method: 'POST',
         headers: {
-            accept: 'application/json',
-            'content-type': 'application/json',
-            'api-key': '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'
+          accept: 'application/json',
+          'content-type': 'application/json',
+          'api-key': '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'
         },
-        body: JSON.stringify(toIFBodyContent),
+        body: JSON.stringify(toClientBodyContent),
         json: true
-    })
-  })
-    .then(() => {
-      console.log('2');
-      res.json(["This", "Worked"]);
-    })
-}   
-    
+
+      })
+      .then(() => {
+        res.json(["Sent without estimate connection"]);
+      })
+    }
+
   } catch (err) {
     return res.status(500).json({
       success: false,
