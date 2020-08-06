@@ -55,20 +55,33 @@ app.post("/request-quote", async (req, res) => {
 
   try {
 
-    const email = req.body.email;
-    const name = req.body.name;
+    //const email = req.body.email;
+    //const name = req.body.name;
     const wantsEstimate = req.body.wantsEstimate;
 
     console.log(wantsEstimate);
 
-    const bodyContent = {
+    //Setting up the auto email to the client
+    const toClientBodyContent = {
       sender: {
-          name: 'Brayden',
+          name: 'InstaFoam',
           email: 'brayden@yycscrewpiles.com',
       },
       to: [{ email: req.body.email, name: req.body.name }],
       replyTo: { email: 'brayden@yycscrewpiles.com' },
       templateId: 1,
+      params: req.body.params
+    }
+
+    //Setting up the auto email to Tyler
+    const toIFBodyContent = {
+      sender: {
+          name: 'InstaFoam - ' + req.body.name,
+          email: 'brayden@yycscrewpiles.com',
+      },
+      to: [{ email: 'bclark@strikeent.com', name: "Tyler" }],
+      replyTo: { email: req.body.email },
+      templateId: 3,
       params: req.body.params
     }
 
@@ -78,7 +91,6 @@ app.post("/request-quote", async (req, res) => {
     //If the user wants to send us an email, send a copy of the email to us and them.
     if(wantsEstimate) {
 
-      console.log("here");
       //Send the info over to SendinBlue
       fetch('https://api.sendinblue.com/v3/smtp/email', {
         method: 'POST',
@@ -87,16 +99,18 @@ app.post("/request-quote", async (req, res) => {
             'content-type': 'application/json',
             'api-key': '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'
         },
-        body: JSON.stringify(bodyContent),
+        body: JSON.stringify(toClientBodyContent),
         json: true
 
-    }).then(() => {
-      console.log("Again");
+    }).then( () => {
+      
+    })
+    
+    
+    .then(() => {
       res.json(["This", "Worked"])
     } )
 }   
-
-    return('Thanks');
     
   } catch (err) {
     return res.status(500).json({
