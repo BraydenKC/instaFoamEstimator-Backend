@@ -91,7 +91,7 @@ app.post("/request-quote", async (req, res) => {
     //If the user wants to send us an email, send a copy of the email to us and them.
     if(wantsEstimate) {
 
-      //Send the info over to SendinBlue
+      //Send the info to client over to SendinBlue
       fetch('https://api.sendinblue.com/v3/smtp/email', {
         method: 'POST',
         headers: {
@@ -103,7 +103,17 @@ app.post("/request-quote", async (req, res) => {
         json: true
 
     }).then( () => {
-      
+
+      //Send the info to IF Team over to SendinBlue
+      fetch('https://api.sendinblue.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+            accept: 'application/json',
+            'content-type': 'application/json',
+            'api-key': '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'
+        },
+        body: JSON.stringify(toIFBodyContent),
+        json: true
     })
     
     
