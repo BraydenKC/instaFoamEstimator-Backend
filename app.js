@@ -73,6 +73,13 @@ app.post("/request-quote", async (req, res) => {
       params: req.body.params
     }
 
+    //Setting up body content for "Add to Contacts" stage
+    const addContactBodyContent = {
+      updateEnabled: true,
+      email: req.body.email,
+      attributes: {'INPUT_NAME': req.body.name}
+    }
+
     //Setting up the auto email to Tyler
     const toIFBodyContent = {
       sender: {
@@ -102,7 +109,23 @@ app.post("/request-quote", async (req, res) => {
         body: JSON.stringify(toClientBodyContent),
         json: true
 
-    }).then( () => {
+    })
+    
+    .then( () => {
+
+      fetch('https://api.sendinblue.com/v3/contacts', {
+        method: 'POST',
+        headers: {
+          accept: 'application/json',
+          'content-type' : 'application/json',
+          'api-key': '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'
+        },
+        body: JSON.stringify(addContactBodyContent),
+        json: true
+      })
+    })
+    
+    .then( () => {
       console.log('1');
       //Send the info to IF Team over to SendinBlue
       fetch('https://api.sendinblue.com/v3/smtp/email', {
